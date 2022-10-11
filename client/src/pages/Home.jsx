@@ -60,9 +60,9 @@ export function Home() {
             width: { xs: 370, sm: 450, md: 500, lg: 595, xl: 670 },
             borderRadius: 3,
             "& .MuiBottomNavigationAction-label": {
-              fontFamily: "Smooch Sans, sans-serif",
+              fontFamily: "Share Tech Mono, sans-serif",
               fontSize: "1rem",
-              color: "white",
+              color: "rgba(255, 255, 255)",
             },
             backgroundColor: "rgb(0, 0, 0, 0.7)",
             margin: "1rem",

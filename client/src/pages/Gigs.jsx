@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Box } from "@mui/system";
 
 const styles = {
@@ -10,10 +9,9 @@ const styles = {
   },
   heading: {
     color: "white",
-    fontFamily: "Bungee Shade, cursive",
+    fontFamily: "Share Tech Mono, cursive",
     textAlign: "center",
     textShadow: "2px 2px 4px black",
-    fontSize: "2.5rem",
   },
   background: {
     backgroundColor: "rgb(0, 0, 0, 0.6)",
@@ -35,11 +33,13 @@ export function Gigs() {
             borderRadius: 3,
             transition: "ease in",
             margin: 1,
-            marginTop: 3,
 
             padding: 1.5,
           }}
         >
+          <h1 style={styles.heading} className="heading">
+            featured
+          </h1>
           <div style={styles.background}>
             <p>dasdasfaadf</p>
           </div>

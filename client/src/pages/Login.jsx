@@ -1,7 +1,11 @@
 import React from "react";
+import { useState } from "react";
 
 import { Box } from "@mui/system";
+import Input from "@mui/material/Input";
+import Button from "@mui/material/Button";
 
+// STYLES
 const styles = {
   container: {
     display: "flex",
@@ -10,23 +14,60 @@ const styles = {
   },
   heading: {
     color: "white",
-    fontFamily: "Bungee Shade, cursive",
+    fontFamily: "Share Tech Mono, cursive",
     textAlign: "center",
     textShadow: "2px 2px 4px black",
-    fontSize: "2.5rem",
   },
   background: {
     backgroundColor: "rgb(0, 0, 0, 0.6)",
     color: "white",
     border: "1px solid rgba(255, 255, 255, 0.2)",
-    paddingLeft: "5px",
-    paddingRight: "5px",
+    padding: "3rem",
     borderRadius: 5,
   },
+  labels: {
+    color: "white",
+    fontFamily: "PT Mono, cursive",
+  },
+  text: {
+    color: "white",
+    fontFamily: "PT Mono, monospace",
+    textAlign: "center",
+  },
+  inputs: {
+    backgroundColor: "rgb(0, 0, 0, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    color: "rgb(255, 255, 255, 0.3)",
+    borderRadius: 5,
+    fontFamily: "Share Tech Mono, monospace",
+  },
+  button: {
+    color: "white",
+    margin: "1rem",
+    fontFamily: "PT Mono, monospace",
+  },
 };
+
 export function Login() {
+  // DEFAULT VALUES
+  const defaultValues = {
+    email: "",
+    password: "",
+  };
+  // STATE
+  const [formValues, setFormValues] = useState(defaultValues);
+  // EVENT HANDLER
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
   return (
     <div>
+      {/* CONTAINER */}
       <div style={styles.container}>
         <Box
           sx={{
@@ -35,16 +76,50 @@ export function Login() {
             borderRadius: 3,
             transition: "ease in",
             margin: 1,
-            marginTop: 3,
 
             padding: 1.5,
           }}
         >
-          <h3 style={styles.heading} className="heading">
-            Login
-          </h3>
-          <div style={styles.background}>
-            <p>dasdasfaadf</p>
+          {/* HEADING */}
+          <h1 style={styles.heading} className="heading">
+            login
+          </h1>
+
+          <div style={styles.container}>
+            <div style={styles.background}>
+              {/* EMAIL FIELD  */}
+              <h4 style={styles.labels}>email:</h4>
+              <Input
+                id="email-input"
+                required
+                name="email"
+                type="text"
+                value={formValues.email}
+                onChange={handleInputChange}
+                style={styles.inputs}
+                inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
+                color="primary"
+              />
+
+              {/* PASSWORD FIELD  */}
+              <h4 style={styles.labels}>password:</h4>
+              <Input
+                id="password"
+                required
+                name="password"
+                inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
+                type="password"
+                value={formValues.password}
+                onChange={handleInputChange}
+                style={styles.inputs}
+              />
+              <div style={styles.container}>
+                {/* BUTTON FIELD */}
+                <Button variant="outlined" style={styles.button}>
+                  login
+                </Button>
+              </div>
+            </div>
           </div>
         </Box>
       </div>
