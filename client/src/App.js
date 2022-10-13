@@ -15,6 +15,7 @@ import { Home } from "./pages/Home";
 import { User } from "./pages/user/User";
 const httpLink = createHttpLink({
   uri: "/graphql",
+  
 });
 
 const authLink = setContext((_, { headers }) => {

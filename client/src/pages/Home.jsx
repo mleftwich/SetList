@@ -11,6 +11,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
+import Auth from '../utils/auth';
+import { Navigate } from 'react-router-dom';
 
 const styles = {
   container: {
@@ -52,6 +54,11 @@ export function Home() {
       return <Register />;
     }
   };
+
+  if (Auth.loggedIn()) {
+    return <Navigate to="/user"/>
+    }
+
   return (
     <div>
       <div style={styles.container}>

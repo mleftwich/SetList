@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
   name: {
@@ -22,6 +23,9 @@ const userSchema = new Schema({
     trim: true,
   },
   genre: {
+    type: String,
+  },
+  about: {
     type: String,
   },
 });

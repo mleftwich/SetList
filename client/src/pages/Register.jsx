@@ -1,9 +1,13 @@
 import React from "react";
 import { useState } from "react";
-
+// MATERIAL IMPORTS
 import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
+// GRAPHQL IMPORTS
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 // STYLES
 const styles = {
@@ -50,6 +54,25 @@ const styles = {
 };
 
 export function Register() {
+  // ADD USER
+  
+  const [addUser, { error, data }] = useMutation(ADD_USER);
+
+  
+
+  const handleFormSubmit = async (event) => {
+    console.log(formValues);
+    try {
+      const { data } = await addUser({
+        variables: { ...formValues },
+      });
+    Auth.login(data.addUser.token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  
+  
   // DEFAULT VALUES
   const defaultValues = {
     email: "",
@@ -88,7 +111,7 @@ export function Register() {
 
           <div style={styles.container}>
             <div style={styles.background}>
-              {/* EMAIL FIELD  */}
+              {/* NAME FIELD  */}
               <h4 style={styles.labels}>name:</h4>
               <Input
                 id="name-input"
@@ -103,7 +126,7 @@ export function Register() {
                 color="primary"
               />
 
-              {/* PASSWORD FIELD  */}
+              {/* EMAIL FIELD  */}
               <h4 style={styles.labels}>email:</h4>
               <Input
                 id="email"
@@ -113,6 +136,20 @@ export function Register() {
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
                 value={formValues.email}
+                onChange={handleInputChange}
+                style={styles.inputs}
+              />
+
+              {/* PASSWORD FIELD  */}
+              <h4 style={styles.labels}>password:</h4>
+              <Input
+                id="password"
+                required
+                name="password"
+                placeholder="min 7 chars"
+                inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
+                type="password"
+                value={formValues.password}
                 onChange={handleInputChange}
                 style={styles.inputs}
               />
@@ -140,10 +177,11 @@ export function Register() {
                 placeholder="Genre"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
-                value={formValues.image}
+                value={formValues.genre}
                 onChange={handleInputChange}
                 style={styles.inputs}
               />
+              {/* ABOUT FIELD */}
               <h4 style={styles.labels}>about:</h4>
               <Input
                 id="about"
@@ -152,18 +190,22 @@ export function Register() {
                 placeholder="Use this space to tell everyone about your act - influences, what to expect from a show and links to socials"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
-                value={formValues.image}
+                value={formValues.about}
                 onChange={handleInputChange}
                 style={styles.inputs}
                 multiline={true}
                 rows={5}
               />
+              
               <div style={styles.container}>
+                
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button}>
-                  login
+                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
+                  register
                 </Button>
               </div>
+              {data && (<p style={styles.labels}>Success!</p>)}
+                {error && (<p style={styles.labels}>try again</p>)}
             </div>
           </div>
         </Box>

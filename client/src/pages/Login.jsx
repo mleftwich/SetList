@@ -1,9 +1,16 @@
 import React from "react";
 import { useState } from "react";
 
+// COMPONENT IMPORTS
 import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
+
+// LOGIN IMPORTS
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
+import { Navigate } from 'react-router-dom';
 
 // STYLES
 const styles = {
@@ -31,6 +38,11 @@ const styles = {
   },
   text: {
     color: "white",
+    fontFamily: "PT Mono, monospace",
+    textAlign: "center",
+  },
+  error: {
+    color: "orange",
     fontFamily: "PT Mono, monospace",
     textAlign: "center",
   },
@@ -65,6 +77,24 @@ export function Login() {
     });
   };
 
+// AUTHENTICATE LOGIN
+  const [login, { error, data }] = useMutation(LOGIN_USER);
+  const handleFormSubmit = async (event) => {
+    console.log(formValues);
+    try {
+      const { data } = await login({
+        variables: { ...formValues },
+      })
+    Auth.login(data.login.token)
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (Auth.loggedIn()) {
+    return <Navigate to="/user"/>
+    }
+
   return (
     <div>
       {/* CONTAINER */}
@@ -84,9 +114,12 @@ export function Login() {
           <h1 style={styles.heading} className="heading">
             login
           </h1>
-
+          
           <div style={styles.container}>
             <div style={styles.background}>
+
+            {error && ( <p style={styles.error}>fail</p> )}
+
               {/* EMAIL FIELD  */}
               <h4 style={styles.labels}>email:</h4>
               <Input
@@ -115,10 +148,11 @@ export function Login() {
               />
               <div style={styles.container}>
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button}>
+                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
                   login
                 </Button>
               </div>
+              {data && (<p style={styles.labels}>Sucess!</p>)}
             </div>
           </div>
         </Box>

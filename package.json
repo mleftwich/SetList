@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/mleftwich/SetList/issues"
   },
-  "homepage": "https://github.com/mleftwich/SetList#readme"
+  "homepage": "https://github.com/mleftwich/SetList#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "concurrently": "^7.4.0",
+    "jwt-decode": "^3.1.2"
+  }
 }
