@@ -22,7 +22,7 @@ const styles = {
     borderRadius: 5,
   },
 };
-export function Gigs() {
+export function Dashboard() {
   return (
     <div>
       <div style={styles.container}>
@@ -38,10 +38,10 @@ export function Gigs() {
           }}
         >
           <h1 style={styles.heading} className="heading">
-            featured
+            dashboard
           </h1>
           <div style={styles.background}>
-            <p>To list upcoming gigs from all bands</p>
+            <p>To list upcoming gigs for specific band</p>
           </div>
         </Box>
       </div>
