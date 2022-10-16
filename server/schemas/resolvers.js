@@ -1,24 +1,24 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Show } = require("../models");
 const { signToken } = require("../utils/auth");
-
 const resolvers = {
   Query: {
     users: async () => {
       return User.find();
     },
-    user: async (parent, { name }) => {
-      return User.findOne({ name });
+    user: async (parent, { _id }) => {
+      return User.findOne({ _id });
     },
     allshows: async () => {
       return Show.find();
     },
-    shows: async (parent, { name }) => {
-      const params = name ? { name } : {};
-      return Show.find(params).sort({ date: -1 });
+    shows: async (parent, { band }, context, info) => {
+      const params = band ? { band } : {};
+      return await Show.find({band})
+  
     },
-    show: async (parent, { showId }) => {
-      return Show.findOne({ _id: showId });
+    show: async (parent, { _id }) => {
+      return Show.findOne({ _id: _id });
     },
   },
 
@@ -30,7 +30,7 @@ const resolvers = {
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
+      
       if (!user) {
         throw new AuthenticationError("No user found with this email address");
       }
@@ -42,23 +42,21 @@ const resolvers = {
       }
 
       const token = signToken(user);
-
       return { token, user };
     },
     addShow: async (
       parent,
-      { venue, address, date, start, notes, attending },
+      { band, venue, address, date, start, notes },
       context
     ) => {
       if (context.user) {
         const show = await Show.create({
+          band,
           venue,
           address,
           date,
           start,
           notes,
-          attending,
-          band: context.user._id,
         });
 
         return show;

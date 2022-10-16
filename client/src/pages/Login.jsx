@@ -80,7 +80,6 @@ export function Login() {
 // AUTHENTICATE LOGIN
   const [login, { error, data }] = useMutation(LOGIN_USER);
   const handleFormSubmit = async (event) => {
-    console.log(formValues);
     try {
       const { data } = await login({
         variables: { ...formValues },

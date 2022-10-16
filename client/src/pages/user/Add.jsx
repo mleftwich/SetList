@@ -1,14 +1,17 @@
 import React from "react";
 import { useState } from "react";
+
 // MATERIAL IMPORTS
 import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
+import CircularProgress from '@mui/material/CircularProgress';
+import Success from '@mui/icons-material/DoneAllOutlined';
 // GRAPHQL IMPORTS
-import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../utils/mutations';
-
-import Auth from '../utils/auth'
+import { useMutation, useQuery } from "@apollo/client";
+import { ADD_SHOW } from "../../utils/mutations";
+import Auth from "../../utils/auth";
+import { QUERY_USER } from "../../utils/queries";
 
 // STYLES
 const styles = {
@@ -59,32 +62,25 @@ const styles = {
   },
 };
 
-export function Register() {
-  // ADD USER
+export function Add() {
+  // GET USER INFO
+const { err, loading, data } = useQuery(QUERY_USER, {
+    variables: { _id: Auth.getProfile().data._id },
+  });
+const band = data?.user.name
 
-  const [addUser, { error, data }] = useMutation(ADD_USER);
-
-  
-
-  const handleFormSubmit = async (event) => {
-    try {
-      const { data } = await addUser({
-        variables: { ...formValues },
-      });
-    Auth.login(data.addUser.token);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  
-  
   // DEFAULT VALUES
   const defaultValues = {
-    email: "",
-    password: "",
+    venue: "",
+    address: "",
+    date: "",
+    start: "",
+    notes: "",
   };
+
   // STATE
   const [formValues, setFormValues] = useState(defaultValues);
+
   // EVENT HANDLER
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,6 +89,32 @@ export function Register() {
       [name]: value,
     });
   };
+
+  // ADD SHOW
+  const [addShow, { error }] = useMutation(ADD_SHOW);
+  const [added, setAdd] = useState(false)
+  const handleFormSubmit = async (event) => {
+    try {
+      const { data } = await addShow({
+        variables: {
+          band: band,
+          venue: formValues.venue,
+          address: formValues.address,
+          date: formValues.date,
+          start: formValues.start,
+          notes: formValues.notes,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setAdd(true)
+  };
+
+  // TIMEOUT SUCCESS EVENT
+  setTimeout(() => {
+    setAdd(false)
+  }, 10000);
 
   return (
     <div>
@@ -111,106 +133,100 @@ export function Register() {
         >
           {/* HEADING */}
           <h1 style={styles.heading} className="heading">
-            register
+            show +
           </h1>
 
           <div style={styles.container}>
             <div style={styles.background}>
-              {/* NAME FIELD  */}
-              <h4 style={styles.labels}>name:</h4>
+              {/* VENUE FIELD  */}
+              <h4 style={styles.labels}>venue:</h4>
               <Input
-                id="name-input"
+                id="venue"
                 required
-                name="name"
+                name="venue"
                 type="text"
-                placeholder="Band or act name"
-                value={formValues.name}
+                placeholder="Where is the gig?"
+                value={formValues.venue}
                 onChange={handleInputChange}
                 style={styles.inputs}
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 color="primary"
               />
 
-              {/* EMAIL FIELD  */}
-              <h4 style={styles.labels}>email:</h4>
+              {/* ADDRESS FIELD  */}
+              <h4 style={styles.labels}>address:</h4>
               <Input
-                id="email"
+                id="address"
                 required
-                name="email"
-                placeholder="Email address"
+                name="address"
+                placeholder="What is the venues address?"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
-                value={formValues.email}
+                value={formValues.address}
                 onChange={handleInputChange}
                 style={styles.inputs}
               />
 
-              {/* PASSWORD FIELD  */}
-              <h4 style={styles.labels}>password:</h4>
+              {/* DATE FIELD  */}
+              <h4 style={styles.labels}>date:</h4>
               <Input
-                id="password"
+                id="date"
                 required
-                name="password"
-                placeholder="min 7 chars"
+                name="date"
+                placeholder="01/02/03"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
-                type="password"
-                value={formValues.password}
+                type="text"
+                value={formValues.date}
                 onChange={handleInputChange}
                 style={styles.inputs}
               />
 
-              {/* IMAGE FIELD  */}
-              <h4 style={styles.labels}>image:</h4>
+              {/* START TIME FIELD  */}
+              <h4 style={styles.labels}>start:</h4>
               <Input
-                id="image"
+                id="start"
                 required
-                name="image"
-                placeholder="Link to an image"
+                name="start"
+                placeholder="00:00am"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
-                value={formValues.image}
+                value={formValues.start}
                 onChange={handleInputChange}
                 style={styles.inputs}
               />
 
-              {/* GENRE FIELD  */}
-              <h4 style={styles.labels}>genre:</h4>
+              {/* NOTES FIELD */}
+              <h4 style={styles.labels}>notes:</h4>
               <Input
-                id="genre"
+                id="notes"
                 required
-                name="genre"
-                placeholder="Genre"
+                name="notes"
+                placeholder="Any notes you want to add(only visible to you) - gear list, venue details, set list etc"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
-                value={formValues.genre}
-                onChange={handleInputChange}
-                style={styles.inputs}
-              />
-              {/* ABOUT FIELD */}
-              <h4 style={styles.labels}>about:</h4>
-              <Input
-                id="about"
-                required
-                name="about"
-                placeholder="Use this space to tell everyone about your act - influences, what to expect from a show and links to socials"
-                inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
-                type="text"
-                value={formValues.about}
+                value={formValues.notes}
                 onChange={handleInputChange}
                 style={styles.inputs}
                 multiline={true}
                 rows={5}
               />
-              
+              {error && <p style={styles.error}>try again</p>}
+              {err && <p style={styles.error}>engineers had too many try again</p>}
               <div style={styles.container}>
                 
+              {loading && <CircularProgress />}
+              {added && <Success />}
+              </div>
+              <div style={styles.container}>
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
-                  register
+                <Button
+                  variant="outlined"
+                  style={styles.button}
+                  onClick={() => handleFormSubmit()}
+                >
+                  add show
                 </Button>
               </div>
-              {data && (<p style={styles.labels}>onward</p>)}
-                {error && (<p style={styles.error}>engineer's had too many try again</p>)}
             </div>
           </div>
         </Box>

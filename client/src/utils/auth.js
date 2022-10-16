@@ -1,10 +1,8 @@
 import decode from 'jwt-decode';
 
-class AuthService {
-  getProfile() {
-    return decode(this.getToken());
-  }
 
+class AuthService {
+ 
   loggedIn() {
     const token = this.getToken();
     return token && !this.isTokenExpired(token) ? true : false;
@@ -26,10 +24,18 @@ class AuthService {
   login(idToken) {
     localStorage.setItem('id_token', idToken);
     window.location.assign('/');
+    
+  }
+
+
+getProfile() {
+    const token = localStorage.getItem('id_token')
+    return decode(token);
   }
 
   logout() {
     localStorage.removeItem('id_token');
+    localStorage.removeItem('band')
   }
 }
 

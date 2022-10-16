@@ -1,22 +1,25 @@
 import React from "react";
 import { Box } from "@mui/system";
-import Button from "@mui/material/Button";
 // AUTH IMPORTS
-import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import { QUERY_USER } from "../../utils/queries";
 import Auth from "../../utils/auth";
 // COMPONENT IMPORTS
 import { Dashboard } from "./Dashboard";
 import { Gigs } from '../Gigs'
 import { Loggedout } from './Logout'
+import { Add } from './Add'
 // NAV IMPORTS
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import AccountIcon from '@mui/icons-material/AccountCircle';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import LogoutIcon from "@mui/icons-material/Logout";
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { useState } from "react";
+import { useQuery } from '@apollo/client';
+import { QUERY_USER } from '../../utils/queries'
 
 const styles = {
   container: {
@@ -51,6 +54,14 @@ const styles = {
   },
 };
 export function User() {
+  // GET BAND NAME
+  const { err, loading, data } = useQuery(QUERY_USER, {
+    variables: { _id: Auth.getProfile().data._id },
+  });
+const band = data?.user.name
+localStorage.setItem('band', band)
+
+// STATE VALUES
   const [value, setValue] = useState("recents");
   const [currentPage, setCurrentPage] = useState("Dashboard");
   const handlePageChange = (page) => setCurrentPage(page);
@@ -58,16 +69,8 @@ export function User() {
     setValue(newValue);
   };
 
-  // LOCK OUT NON USERS
-  const { name: userParam } = useParams();
-  const { loading, data } = useQuery(QUERY_USER, {
-    variables: { name: userParam },
-  });
-  const user = data?.user || {};
-
   
-
-  // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
+ // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
   const renderPage = () => {
     if (currentPage === "Dashboard") {
       return <Dashboard />;
@@ -75,10 +78,13 @@ export function User() {
          return <Gigs />;
        } else if (currentPage === "Logout") {
          return <Loggedout />;
-    }
+    } else if (currentPage === "Add") {
+      return <Add />;
+ }
   };
 
   if (Auth.loggedIn()) {
+  
   return (
     <div>
       <div style={styles.container}>
@@ -111,11 +117,24 @@ export function User() {
             onClick={() => handlePageChange("Dashboard")}
           />
           <BottomNavigationAction
+            label="Profile"
+            value="Profile"
+            icon={<AccountIcon style={{ color: "white" }} />}
+            onClick={() => handlePageChange("Profile")}
+          />
+          <BottomNavigationAction
+            label="Add"
+            value="Add"
+            icon={<AddBoxIcon style={{ color: "white" }} />}
+            onClick={() => handlePageChange("Add")}
+          />
+          <BottomNavigationAction
             label="Logout"
             value="Logout"
             icon={<LogoutIcon style={{ color: "white" }} />}
             onClick={() => handlePageChange("Logout")}
           />
+          
         </BottomNavigation>
       </div>
       <div style={styles.container}>
@@ -138,39 +157,12 @@ export function User() {
           {renderPage()}
         </Box>
       </div>
+      <div style={styles.container}>
+            {err && <p style={styles.error}>engineer's had too many please try again</p>}
+            {loading && <CircularProgress />}
+          </div>
     </div>
   );
-        }
-        if (loading) {
-          return <div>Loading...</div>;
-        }
-      
-        if (!user?.username) {
-          return (
-            <div style={styles.container}>
-              <Box
-                sx={{
-                  width: { xs: 330, sm: 300, md: 700, lg: 900, xl: 1000 },
-                  backgroundColor: "rgb(0, 0, 0, 0.7)",
-                  borderRadius: 3,
-                  transition: "ease in",
-                  margin: 1,
-                  marginTop: 3,
-                  padding: 1.5,
-                }}
-              >
-                <h1 style={styles.heading}>the setlist</h1>
-                <h3 style={styles.labels}>
-                  Oops! This is for users only. Click the link below to sign up or
-                  login.
-                </h3>
-                <div style={styles.container}>
-                  <Button href="/" variant="outlined" style={styles.button}>
-                    home
-                  </Button>
-                </div>
-              </Box>
-            </div>
-          );
-        }
+       
+  }
 }

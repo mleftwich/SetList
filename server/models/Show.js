@@ -27,14 +27,12 @@ const showSchema = new Schema({
     trim: true,
   },
   attending: {
-    type: Number,
+    type: String,
   },
-  band: [
-    {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-    }
-  ],
+  band: {
+   type: String,
+   trim: true,
+  }
 });
 
 const Show = model("show", showSchema);

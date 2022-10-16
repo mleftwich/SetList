@@ -32,17 +32,16 @@ export const ADD_USER = gql`
 
 
 export const ADD_SHOW = gql`
-  mutation addShow($band: String!, $venue: String!, $start: String!, $end: String!, $notes: String!, $attending: Int!) {
-    addShow(band: $band, venue: $venue, start: $start, end: $end, notes: $notes, attending: $attending) {
+  mutation addShow($band: String!, $venue: String!, $address: String!, $date: String!, $start: String!, $notes: String!) {
+    addShow(band: $band, venue: $venue, address: $address, date: $date, start: $start, notes: $notes) {
       _id
-      venue
       band
+      venue
+      address
       date
       start
-      end
       notes
-      attending
-    }
+  }
   }
 `;
 

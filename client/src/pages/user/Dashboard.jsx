@@ -1,5 +1,10 @@
 import React from "react";
 import { Box } from "@mui/system";
+import CircularProgress from '@mui/material/CircularProgress';
+import { useQuery } from '@apollo/client';
+
+import { QUERY_BAND_SHOWS } from "../../utils/queries";
+
 
 const styles = {
   container: {
@@ -21,8 +26,22 @@ const styles = {
     paddingRight: "5px",
     borderRadius: 5,
   },
+  error: {
+    color: "orange",
+    fontFamily: "PT Mono, monospace",
+    textAlign: "center",
+  },
 };
 export function Dashboard() {
+// GET BAND SHOWS
+const band = localStorage.getItem("band");
+console.log(band)
+ const { error, loading, data } = useQuery(QUERY_BAND_SHOWS, {
+     variables: { band: band }
+     });
+     console.log(data)
+
+  
   return (
     <div>
       <div style={styles.container}>
@@ -42,6 +61,11 @@ export function Dashboard() {
           </h1>
           <div style={styles.background}>
             <p>To list upcoming gigs for specific band</p>
+            
+          </div>
+          <div style={styles.container}>
+            {error && <p style={styles.error}>engineer's had too many please try again</p>}
+            {loading && <CircularProgress />}
           </div>
         </Box>
       </div>
