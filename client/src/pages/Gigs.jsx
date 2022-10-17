@@ -28,10 +28,8 @@ const styles = {
   background: {
     color: "white",
     border: "1px solid rgba(255, 255, 255, 0.2)",
-    paddingLeft: "5px",
-    paddingRight: "5px",
     borderRadius: 5,
-    marginTop: '1px'
+    marginTop: '1px',
   },
   links: {
     color: blueGrey[400],
@@ -52,7 +50,6 @@ const styles = {
   boxes: {
     display: "flex",
     justifyContent: "space-between",
-    width: '100%',
   },
   address: {
     color: blueGrey[200],
@@ -95,7 +92,7 @@ const res = [data?.allshows];
               <div style={styles.background} key={shows._id}>
                 <div style={styles.boxes}>
                   <h4 style={styles.text}><DateIcon sx={{ color: blueGrey[400]}} /> {shows.date}</h4>
-                  <h3 style={styles.band}><BandIcon sx={{ color: blueGrey[400]}} /> {shows.band}</h3>
+                  <h3 style={styles.band}><BandIcon sx={{ color: blueGrey[400]}} />|{shows.band}</h3>
                   <h4 style={styles.text}><AddressIcon sx={{ color: blueGrey[400]}} /> {shows.venue}</h4>
                   <h4 style={styles.text}><TimeIcon sx={{ color: blueGrey[400]}} /> {shows.start}</h4>
                   <h4 style={styles.text}>{shows.attending}</h4>

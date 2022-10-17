@@ -104,7 +104,7 @@ refetch()
       <div style={styles.container}>
         <Box
           sx={{
-            width: { xs: 330, sm: 500, md: 700, lg: 900, xl: 1000 },
+            width: { xs: 400, sm: 400, md: 700, lg: 900, xl: 1000 },
             backgroundColor: "rgb(0, 0, 0, 0.7)",
             borderRadius: 3,
             transition: "ease in",
@@ -121,7 +121,7 @@ refetch()
               <div style={styles.background} key={shows._id}>
                 <div style={styles.boxes}>
                   <h4 style={styles.text}><DateIcon sx={{ color: blueGrey[400]}} /> {shows.date}</h4>
-                  <h3 style={styles.venue}><AddressIcon sx={{ color: blueGrey[400]}} /> {shows.venue}</h3>
+                  <h3 style={styles.venue}><AddressIcon sx={{ color: blueGrey[400]}} /> <br />{shows.venue}</h3>
                   <h4 style={styles.text}><TimeIcon sx={{ color: blueGrey[400]}} /> {shows.start}</h4>
                   <h4 style={styles.text}>{shows.attending}</h4>
                   <IconButton color='primary'><TextSnippetIcon /></IconButton>

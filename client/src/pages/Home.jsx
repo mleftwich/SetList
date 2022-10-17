@@ -101,7 +101,7 @@ export function Home() {
       <div style={styles.container}>
         <Box
           sx={{
-            width: { xs: 330, sm: 300, md: 700, lg: 900, xl: 1000 },
+            width: { xs: 390, sm: 400, md: 700, lg: 900, xl: 1000 },
             backgroundColor: "rgb(0, 0, 0, 0.7)",
             borderRadius: 3,
             transition: "ease in",
