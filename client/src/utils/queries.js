@@ -2,7 +2,8 @@ import { gql } from '@apollo/client';
 
 export const QUERY_SHOWS = gql`
   query getShows {
-    Shows {
+    allshows {
+    _id
       band
       venue
       date

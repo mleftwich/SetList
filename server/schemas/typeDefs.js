@@ -13,7 +13,7 @@ const typeDefs = gql`
 
   type Show {
     _id: ID!
-    band: String!
+    band: String
     venue: String!
     address: String!
     date: String!

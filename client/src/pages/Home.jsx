@@ -64,7 +64,7 @@ export function Home() {
       <div style={styles.container}>
         <BottomNavigation
           sx={{
-            width: { xs: 370, sm: 450, md: 500, lg: 595, xl: 670 },
+            width: { xs: 330, sm: 450, md: 500, lg: 595, xl: 670 },
             borderRadius: 3,
             "& .MuiBottomNavigationAction-label": {
               fontFamily: "Share Tech Mono, sans-serif",
