@@ -108,7 +108,7 @@ const band = data?.user.name
     } catch (error) {
       console.error(error);
     }
-    setAdd(true)
+    
   };
 
   // TIMEOUT SUCCESS EVENT
@@ -187,7 +187,7 @@ const band = data?.user.name
                 id="start"
                 required
                 name="start"
-                placeholder="00:00am"
+                placeholder="0:00am/pm"
                 inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
                 type="text"
                 value={formValues.start}
@@ -216,6 +216,7 @@ const band = data?.user.name
                 
               {loading && <CircularProgress />}
               {added && <Success />}
+              {added && <p style={styles.text}>show added</p>}
               </div>
               <div style={styles.container}>
                 {/* BUTTON FIELD */}

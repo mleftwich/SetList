@@ -68,9 +68,7 @@ const resolvers = {
       if (context.user) {
         const show = await Show.findOneAndDelete({
           _id: showId,
-          band: context.user_id,
         });
-
         return show;
       }
       throw new AuthenticationError("You need to be logged in!");

@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 // AUTH IMPORTS
 import Auth from "../../utils/auth";
 // COMPONENT IMPORTS
-import { Dashboard } from "./Dashboard";
+import  Dashboard from "./Dashboard";
 import { Gigs } from '../Gigs'
 import { Loggedout } from './Logout'
 import { Add } from './Add'
@@ -20,7 +20,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from "react";
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../../utils/queries'
-
+import { Navigate } from 'react-router-dom';
 const styles = {
   container: {
     display: "flex",
@@ -69,7 +69,9 @@ localStorage.setItem('band', band)
     setValue(newValue);
   };
 
-  
+  if (!Auth.loggedIn()) {
+    return <Navigate to="/"/>
+    }
  // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
   const renderPage = () => {
     if (currentPage === "Dashboard") {
@@ -90,7 +92,7 @@ localStorage.setItem('band', band)
       <div style={styles.container}>
         <BottomNavigation
           sx={{
-            width: { xs: 370, sm: 450, md: 500, lg: 595, xl: 670 },
+            width: { xs: 350, sm: 450, md: 500, lg: 595, xl: 670 },
             borderRadius: 3,
             "& .MuiBottomNavigationAction-label": {
               fontFamily: "Share Tech Mono, sans-serif",

@@ -3,13 +3,18 @@ import React from "react";
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 import { blueGrey } from "@mui/material/colors";
+import { teal } from "@mui/material/colors"
 import IconButton from '@mui/material/IconButton';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import AddressIcon from '@mui/icons-material/Signpost';
+import DateIcon from '@mui/icons-material/EventNote';
+import TimeIcon from '@mui/icons-material/HistoryToggleOff';
 // DATA IMPORTS
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_BAND_SHOWS } from "../../utils/queries";
+import { REMOVE_SHOW } from "../../utils/mutations";
 
 // STYLES
 const styles = {
@@ -47,6 +52,7 @@ const styles = {
     textAlign: "center",
     textDecoration: "none",
   },
+  
   text: {
     color: "white",
     fontFamily: "Share Tech Mono, monospace",
@@ -57,18 +63,42 @@ const styles = {
     margin: "1rem",
     fontFamily: "PT Mono, monospace",
   },
+  venue: {
+    color: teal[100],
+    fontFamily: "PT Mono, monospace",
+   
+  },
 };
 
 
-export function Dashboard() {
+
+export default function Dashboard() {
+
   // GET BAND SHOWS
   const band = localStorage.getItem("band");
-  const { error, loading, data } = useQuery(QUERY_BAND_SHOWS, {
+  const { error, loading, data, refetch } = useQuery(QUERY_BAND_SHOWS, {
     variables: { band: band },
   });
   const res = [data?.shows];
   const shows = res[0];
+console.log(shows)
+// FUNCTION TO DELETE SHOW
 
+const [delShow, { error: removeError, data: removeData }] = useMutation(REMOVE_SHOW);
+
+async function handleDelete(show) {
+  
+  try {
+  const data = await delShow({
+    variables: {
+      id: show,
+  }});
+  refetch()
+}catch (e) {
+  console.error(e);
+}}
+  
+refetch()
   return (
     <div>
       <div style={styles.container}>
@@ -90,13 +120,13 @@ export function Dashboard() {
             shows.map((shows) => (
               <div style={styles.background} key={shows._id}>
                 <div style={styles.boxes}>
-                  <h4 style={styles.text}>{shows.date}</h4>
-                  <h4 style={styles.links}>{shows.venue}</h4>
-                  <h4 style={styles.text}>{shows.start}</h4>
+                  <h4 style={styles.text}><DateIcon sx={{ color: blueGrey[400]}} /> {shows.date}</h4>
+                  <h3 style={styles.venue}><AddressIcon sx={{ color: blueGrey[400]}} /> {shows.venue}</h3>
+                  <h4 style={styles.text}><TimeIcon sx={{ color: blueGrey[400]}} /> {shows.start}</h4>
                   <h4 style={styles.text}>{shows.attending}</h4>
                   <IconButton color='primary'><TextSnippetIcon /></IconButton>
                   <IconButton color='primary'><EditIcon /></IconButton>
-                  <IconButton color='primary'><DeleteIcon /></IconButton>
+                  <IconButton color='primary' onClick={() => handleDelete(shows._id)}><DeleteIcon /></IconButton>
                 </div>
               </div>
             ))}

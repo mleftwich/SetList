@@ -1,7 +1,13 @@
 import React from "react";
+// MATERIAL IMPORTS
 import { Box } from "@mui/system";
 import { blueGrey } from "@mui/material/colors";
-
+import { teal } from "@mui/material/colors"
+import AddressIcon from '@mui/icons-material/Signpost';
+import BandIcon from '@mui/icons-material/NoiseAware';
+import DateIcon from '@mui/icons-material/EventNote';
+import TimeIcon from '@mui/icons-material/HistoryToggleOff';
+import CircularProgress from "@mui/material/CircularProgress";
 // DATA IMPORTS
 import { useQuery } from "@apollo/client";
 import { QUERY_SHOWS } from "../utils/queries";
@@ -38,10 +44,21 @@ const styles = {
     fontFamily: "Share Tech Mono, monospace",
     marginLeft: ".5rem",
   },
+  band: {
+    color: teal[100],
+    fontFamily: "PT Mono, monospace",
+   
+  },
   boxes: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: '100%',
+  },
+  address: {
+    color: blueGrey[200],
+    fontFamily: "Share Tech Mono, monospace",
+    textAlign: "center",
+    textDecoration: "none",
   },
 };
 
@@ -49,9 +66,10 @@ const styles = {
 export function Gigs() {
 // GET SHOWS
 
-const { loading, error, data } = useQuery(QUERY_SHOWS)
+const { loading, error, data, refetch } = useQuery(QUERY_SHOWS)
 const res = [data?.allshows];
   const shows = res[0]
+  refetch()
   return (
     <div>
       <div style={styles.container}>
@@ -70,21 +88,29 @@ const res = [data?.allshows];
             featured
           </h1>
          <div>
-          <h4 style={styles.links}>date/band/venue/start</h4>
+         
          </div>
           {shows &&
             shows.map((shows) => (
               <div style={styles.background} key={shows._id}>
                 <div style={styles.boxes}>
-                  <h4 style={styles.text}>{shows.date}</h4>
-                  <h4 style={styles.links}>{shows.band}</h4>
-                  <h4 style={styles.text}>{shows.venue}</h4>
-                  <h4 style={styles.text}>{shows.start}</h4>
+                  <h4 style={styles.text}><DateIcon sx={{ color: blueGrey[400]}} /> {shows.date}</h4>
+                  <h3 style={styles.band}><BandIcon sx={{ color: blueGrey[400]}} /> {shows.band}</h3>
+                  <h4 style={styles.text}><AddressIcon sx={{ color: blueGrey[400]}} /> {shows.venue}</h4>
+                  <h4 style={styles.text}><TimeIcon sx={{ color: blueGrey[400]}} /> {shows.start}</h4>
                   <h4 style={styles.text}>{shows.attending}</h4>
                   </div>
                   </div>
             ))}
          
+         <div style={styles.container}>
+            {error && (
+              <p style={styles.error}>
+                engineer's had too many please try again
+              </p>
+            )}
+            {loading && <CircularProgress />}
+            </div>
         </Box>
       </div>
     </div>

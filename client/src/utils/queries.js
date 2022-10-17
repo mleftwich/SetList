@@ -6,6 +6,7 @@ export const QUERY_SHOWS = gql`
     _id
       band
       venue
+      address
       date
       start
       notes

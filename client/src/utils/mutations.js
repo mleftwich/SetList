@@ -45,5 +45,11 @@ export const ADD_SHOW = gql`
   }
 `;
 
+export const REMOVE_SHOW = gql`
+mutation removeShow($id: ID!) {
+  removeShow(showId: $id) {
+    _id
+}
+}`
 
 
