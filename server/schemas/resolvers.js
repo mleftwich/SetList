@@ -28,6 +28,12 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    editUser: async (parent, { id, email, image, genre, about }) => {
+      const update = {email, image, genre, about}
+      const user = await User.findByIdAndUpdate(id, update, { new: true })
+      console.log(id)
+      return user
+    },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       

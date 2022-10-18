@@ -7,6 +7,7 @@ import  Dashboard from "./Dashboard";
 import { Gigs } from '../Gigs'
 import { Loggedout } from './Logout'
 import { Add } from './Add'
+import { Profile } from './Profile'
 // NAV IMPORTS
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
@@ -82,6 +83,8 @@ localStorage.setItem('band', band)
          return <Loggedout />;
     } else if (currentPage === "Add") {
       return <Add />;
+ } else if (currentPage === "Profile") {
+  return <Profile />;
  }
   };
 

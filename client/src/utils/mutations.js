@@ -28,6 +28,15 @@ export const ADD_USER = gql`
   }
 `;
 
+export const EDIT_USER = gql`
+mutation editUser($id: ID!, $email: String!, $image: String!, $genre: String!, $about: String!) {
+editUser(id: $id, email: $email, image: $image, genre: $genre, about: $about) {
+email
+  image
+  genre
+  about
+  }
+}`
 
 
 
