@@ -68,7 +68,7 @@ const res = [data?.allshows];
   const shows = res[0]
   refetch()
   return (
-    <div>
+    <div class="fade">
       <div style={styles.container}>
         <Box
           sx={{

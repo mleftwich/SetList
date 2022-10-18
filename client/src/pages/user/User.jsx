@@ -91,7 +91,7 @@ localStorage.setItem('band', band)
   if (Auth.loggedIn()) {
   
   return (
-    <div>
+    <div class="fade">
       <div style={styles.container}>
         <BottomNavigation
           sx={{

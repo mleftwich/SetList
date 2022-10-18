@@ -60,7 +60,7 @@ export function Home() {
     }
 
   return (
-    <div>
+    <div class="fade">
       <div style={styles.container}>
         <BottomNavigation
           sx={{

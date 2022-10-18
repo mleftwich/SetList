@@ -38,7 +38,7 @@ export function Loggedout() {
         Auth.logout()
         }
   return (
-    <div>
+    <div class="fade">
       <div style={styles.container}>
         <Box
           sx={{

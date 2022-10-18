@@ -95,7 +95,7 @@ export function Register() {
   };
 
   return (
-    <div>
+    <div class="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box

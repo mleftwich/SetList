@@ -117,7 +117,7 @@ const band = data?.user.name
   }, 10000);
 
   return (
-    <div>
+    <div class="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box

@@ -81,7 +81,6 @@ export function Profile() {
     variables: { _id: Auth.getProfile().data._id },
   });
   const band = data?.user;
-  console.log(band._id);
 
   // EDIT USER INFO
 
@@ -123,7 +122,7 @@ export function Profile() {
   };
 
   return (
-    <div>
+    <div class="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box

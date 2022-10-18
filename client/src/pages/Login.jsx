@@ -95,7 +95,7 @@ export function Login() {
     }
 
   return (
-    <div>
+    <div class="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box

@@ -3,14 +3,16 @@ import React from "react";
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 import { blueGrey } from "@mui/material/colors";
-import { teal } from "@mui/material/colors"
-import IconButton from '@mui/material/IconButton';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
-import AddressIcon from '@mui/icons-material/Signpost';
-import DateIcon from '@mui/icons-material/EventNote';
-import TimeIcon from '@mui/icons-material/HistoryToggleOff';
+import { teal } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
+import AddressIcon from "@mui/icons-material/Signpost";
+import DateIcon from "@mui/icons-material/EventNote";
+import TimeIcon from "@mui/icons-material/HistoryToggleOff";
+import Modal from "@mui/material/Modal";
+import CloseIcon from '@mui/icons-material/CancelPresentation';
 // DATA IMPORTS
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_BAND_SHOWS } from "../../utils/queries";
@@ -26,7 +28,7 @@ const styles = {
   boxes: {
     display: "flex",
     justifyContent: "space-around",
-    width: '100%',
+    width: "100%",
   },
   heading: {
     color: "white",
@@ -36,10 +38,10 @@ const styles = {
   },
   background: {
     color: "white",
-    border: "1px solid rgba(455, 455, 455, 0.4)",
+    border: "1px solid rgba(455, 455, 455, 0.2)",
     borderRadius: 5,
-    width: 'auto',
-    marginTop: '1px'
+    width: "auto",
+    marginTop: "1px",
   },
   error: {
     color: "orange",
@@ -52,7 +54,7 @@ const styles = {
     textAlign: "center",
     textDecoration: "none",
   },
-  
+
   text: {
     color: "white",
     fontFamily: "Share Tech Mono, monospace",
@@ -66,14 +68,10 @@ const styles = {
   venue: {
     color: teal[100],
     fontFamily: "PT Mono, monospace",
-   
   },
 };
 
-
-
 export default function Dashboard() {
-
   // GET BAND SHOWS
   const band = localStorage.getItem("band");
   const { error, loading, data, refetch } = useQuery(QUERY_BAND_SHOWS, {
@@ -81,26 +79,65 @@ export default function Dashboard() {
   });
   const res = [data?.shows];
   const shows = res[0];
-console.log(shows)
-// FUNCTION TO DELETE SHOW
 
-const [delShow, { error: removeError, data: removeData }] = useMutation(REMOVE_SHOW);
 
-async function handleDelete(show) {
+  // FUNCTION TO DELETE SHOW
+  const [delShow, { error: removeError, data: removeData }] =
+    useMutation(REMOVE_SHOW);
+  async function handleDelete(show) {
+    try {
+      const data = await delShow({
+        variables: {
+          id: show,
+        },
+      });
+      refetch();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+
+  // NOTES MODAL
   
-  try {
-  const data = await delShow({
-    variables: {
-      id: show,
-  }});
-  refetch()
-}catch (e) {
-  console.error(e);
-}}
-  
-refetch()
+  const handleClose = () => setOpen(false);
+  const [open, setOpen] = React.useState(false);
+  const [notes, setNotes] = React.useState("")
+  function handleOpen(note) {
+    setOpen(true)
+    setNotes(note)
+  }
+  const noteDiv = () => {
+    return (
+      
+      <div style={styles.container}>
+        <Modal open={handleOpen} close={handleClose}>
+          <Box
+          sx={{
+            width: { xs: 250, sm: 300, md: 400, lg: 500, xl: 500 },
+            backgroundColor: "rgb(0, 0, 0, 0.7)",
+            borderRadius: 3,
+            transition: "ease in",
+            margin: 1,
+            padding: 1.5,
+          }}
+        >
+          <h3 style={styles.links}>notes</h3>
+            <p style={styles.text}>{notes}</p>
+            <div style={styles.container}>
+            <IconButton color="primary" onClick={() => handleClose()}>
+            
+            <CloseIcon />
+          </IconButton>
+          </div>
+          </Box>
+          </Modal>
+          </div>
+    );
+  }
+  refetch();
   return (
-    <div>
+    <div class="fade">
       <div style={styles.container}>
         <Box
           sx={{
@@ -120,19 +157,38 @@ refetch()
             shows.map((shows) => (
               <div style={styles.background} key={shows._id}>
                 <div style={styles.boxes}>
-                  <h4 style={styles.text}><DateIcon sx={{ color: blueGrey[400]}} /> {shows.date}</h4>
-                  <h3 style={styles.venue}><AddressIcon sx={{ color: blueGrey[400]}} /> <br />{shows.venue}</h3>
-                  <h4 style={styles.text}><TimeIcon sx={{ color: blueGrey[400]}} /> {shows.start}</h4>
+                  <h4 style={styles.text}>
+                    <DateIcon sx={{ color: blueGrey[400] }} /> {shows.date}
+                  </h4>
+                  <h3 style={styles.venue}>
+                    <AddressIcon sx={{ color: blueGrey[400] }} /> <br />
+                    {shows.venue}
+                  </h3>
+                  <h4 style={styles.text}>
+                    <TimeIcon sx={{ color: blueGrey[400] }} /> {shows.start}
+                  </h4>
                   <h4 style={styles.text}>{shows.attending}</h4>
-                  <IconButton color='primary'><TextSnippetIcon /></IconButton>
-                  <IconButton color='primary'><EditIcon /></IconButton>
-                  <IconButton color='primary' onClick={() => handleDelete(shows._id)}><DeleteIcon /></IconButton>
+              
+                  <IconButton color="primary" onClick={() => handleOpen(shows.notes)}>
+                    <TextSnippetIcon />
+                  </IconButton>
+              
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleDelete(shows._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </div>
+               
               </div>
             ))}
 
           <div style={styles.container}>
-            {error && (
+          <div style={styles.container}>
+                  {open ? noteDiv() : null}
+                 </div>
+            {(error || removeError) && (
               <p style={styles.error}>
                 engineer's had too many please try again
               </p>

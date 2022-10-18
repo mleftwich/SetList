@@ -1,7 +1,7 @@
 
 
 html {
-  background: url('./imgs/amp2.png') no-repeat center center fixed;
+  background: url('./imgs/background.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -24,10 +24,30 @@ code {
     monospace;
 }
 
+.fade {
+  background-color: transparent;
+  animation: fadeIn 2s;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 @media only screen and (max-width: 480px) {
   body {
-  background: url('./imgs/amp2.png') no-repeat center center fixed;
+  background: url('./imgs/background.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
