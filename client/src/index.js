@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blueGrey } from '@mui/material/colors'
 import { deepOrange } from '@mui/material/colors'
+import { BrowserRouter} from 'react-router-dom'
 // THEME 
 const theme = createTheme({
   palette: {
@@ -22,9 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
   <React.StrictMode>
-     
+     <BrowserRouter>
     <App />
-    
+    </BrowserRouter>
   </React.StrictMode>
   </ThemeProvider>
 );
