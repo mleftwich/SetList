@@ -101,7 +101,6 @@ export function Gigs() {
   };
   // on click query
   function onClick(show) {
-    console.log("sent to query:", show.band);
     getBand({ variables: { name: show.band } }).then((res) => {
       setInfo(res.data.userName);
       handleOpen();
@@ -242,7 +241,7 @@ export function Gigs() {
                   >
                     <div style={styles.container}>
                       <AddressIcon />
-                      <Typography style={styles.links}>{address}</Typography>
+                      <Typography style={styles.links} sx={{ padding: '.2rem', paddingLeft: '1rem', paddingRight: '1rem'}}>{address}</Typography>
                     </div>
                   </Popover>
                   <h4 style={styles.text}>
