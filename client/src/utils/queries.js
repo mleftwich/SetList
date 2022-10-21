@@ -66,3 +66,13 @@ export const QUERY_USER = gql`
     }
   }
 `;
+export const QUERY_NAME = gql`
+  query userName($name: String!) {
+    userName(name: $name) {
+      name
+      image
+      genre
+      about
+    }
+  }
+`;

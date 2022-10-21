@@ -34,6 +34,7 @@ const typeDefs = gql`
     allshows: [Show]
     shows(band: String!): [Show]
     show(showId: ID!): Show
+    userName(name: String!): User
   }
 
   type Mutation {
@@ -43,6 +44,7 @@ const typeDefs = gql`
     addShow(band: String!, venue: String!, address: String!, date: String!, start: String!, notes: String!): Show
     removeShow(showId: ID!): Show
     editShow(showId: ID!): Show
+    editNotes(id: ID!, notes: String!): Show
   }
 `;
 

@@ -26,7 +26,7 @@ code {
 
 .fade {
   background-color: transparent;
-  animation: fadeIn 2s;
+  animation: fadeIn 1s;
 }
 @keyframes fadeOut {
   0% {
@@ -43,6 +43,35 @@ code {
   100% {
     opacity: 1;
   }
+}
+
+.MuiButtonBase-root {
+  font-family: 'PT Mono'
+}
+.bandlink:hover {
+  font-size: 1.3rem,
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #45260875;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.529);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.links {
+  font-family: monospace;
 }
 
 @media only screen and (max-width: 480px) {

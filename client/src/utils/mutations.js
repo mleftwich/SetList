@@ -31,14 +31,19 @@ export const ADD_USER = gql`
 export const EDIT_USER = gql`
 mutation editUser($id: ID!, $email: String!, $image: String!, $genre: String!, $about: String!) {
 editUser(id: $id, email: $email, image: $image, genre: $genre, about: $about) {
-email
+  email
   image
   genre
   about
   }
 }`
 
-
+export const EDIT_NOTES = gql`
+mutation editNotes($id: ID!, $notes: String!) {
+editNotes(id: $id, notes: $notes) {
+notes
+}
+}`
 
 export const ADD_SHOW = gql`
   mutation addShow($band: String!, $venue: String!, $address: String!, $date: String!, $start: String!, $notes: String!) {

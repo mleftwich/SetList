@@ -7,5 +7,5 @@ mongoose.connect(
     useUnifiedTopology: true,
   }
 );
-
+mongoose.syncIndexes()
 module.exports = mongoose.connection;

@@ -4,6 +4,7 @@ import { Box } from "@mui/system";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { Gigs } from "./Gigs";
+import { teal } from "@mui/material/colors";
 // NAV IMPORTS
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
@@ -11,8 +12,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useState } from "react";
-import Auth from '../utils/auth';
-import { Navigate } from 'react-router-dom';
+import Auth from "../utils/auth";
+import { Navigate } from "react-router-dom";
 
 const styles = {
   container: {
@@ -35,6 +36,16 @@ const styles = {
     paddingRight: "5px",
     borderRadius: 5,
   },
+  text: {
+    color: "white",
+    fontFamily: "Share Tech Mono, sans-serif",
+    textAlign: "center",
+  },
+  about: {
+    color: teal[200],
+    textAlign: "center",
+    fontFamily: "Share Tech Mono, sans-serif",
+  },
 };
 export function Home() {
   const [value, setValue] = useState("recents");
@@ -56,11 +67,12 @@ export function Home() {
   };
 
   if (Auth.loggedIn()) {
-    return <Navigate to="/user"/>
-    }
+    return <Navigate to="/user" />;
+  }
 
+  // HOME PAGE WRAPPER
   return (
-    <div class="fade">
+    <div className="fade">
       <div style={styles.container}>
         <BottomNavigation
           sx={{
@@ -118,6 +130,11 @@ export function Home() {
           {renderPage()}
         </Box>
       </div>
+
+      <p style={styles.text}>
+        Artists taking show promotion into their own hands
+      </p>
+      <p style={styles.about}>Based in Perth, Western Australia.</p>
     </div>
   );
 }

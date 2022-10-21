@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/system";
-import Auth from '../../utils/auth';
+import Auth from "../../utils/auth";
 import Button from "@mui/material/Button";
 const styles = {
   container: {
@@ -30,15 +30,15 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Agency FB, cursive",
   },
 };
 export function Loggedout() {
-    if (Auth.loggedIn()) {
-        Auth.logout()
-        }
+  if (Auth.loggedIn()) {
+    Auth.logout();
+  }
   return (
-    <div class="fade">
+    <div className="fade">
       <div style={styles.container}>
         <Box
           sx={{
@@ -54,13 +54,13 @@ export function Loggedout() {
           <h1 style={styles.heading} className="heading">
             logged out
           </h1>
-          
-            <p style={styles.text}>..be most excellent to each other</p>
-            <div style={styles.container}>
-                  <Button href="/" variant="outlined" style={styles.button}>
-                    home
-                  </Button>
-                  </div>
+
+          <p style={styles.text}>..be most excellent to each other</p>
+          <div style={styles.container}>
+            <Button href="/" variant="outlined" style={styles.button}>
+              <b>home</b>
+            </Button>
+          </div>
         </Box>
       </div>
     </div>

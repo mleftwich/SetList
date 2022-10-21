@@ -52,7 +52,7 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Agency FB, cursive",
   },
   error: {
     color: "orange",
@@ -97,11 +97,16 @@ export function Profile() {
           about: formValues.about,
         },
       });
+      if (data) {
+        refetch();
+      }
     } catch (error) {
       console.error(error);
     }
-    refetch()
+    refetch();
   };
+
+  // PROFILE FORM
 
   // DEFAULT VALUES
   const defaultValues = {
@@ -122,7 +127,7 @@ export function Profile() {
   };
 
   return (
-    <div class="fade">
+    <div className="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box
@@ -141,7 +146,7 @@ export function Profile() {
             {band.name}
           </h1>
           <div style={styles.container}>
-            <img src={band.image} style={styles.pic} alt="Profile image"/>
+            <img src={band.image} style={styles.pic} alt="" />
           </div>
           <br />
           <div style={styles.container}>
@@ -205,16 +210,21 @@ export function Profile() {
 
               <div style={styles.container}>
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
-                  save
+                <Button
+                  variant="outlined"
+                  style={styles.button}
+                  onClick={() => handleFormSubmit()}
+                >
+                  <b>save</b>
                 </Button>
               </div>
               <div style={styles.container}>
-                {(error || userError) && (<p style={styles.error}>engineer's had too many try again</p>)}
+                {(error || userError) && (
+                  <p style={styles.error}>engineer's had too many try again</p>
+                )}
                 {loading && <CircularProgress />}
-                </div>
+              </div>
             </div>
-            
           </div>
         </Box>
       </div>

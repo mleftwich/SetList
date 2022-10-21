@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import CircularProgress from '@mui/material/CircularProgress';
-import Success from '@mui/icons-material/DoneAllOutlined';
+import CircularProgress from "@mui/material/CircularProgress";
+import Success from "@mui/icons-material/DoneAllOutlined";
 // GRAPHQL IMPORTS
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_SHOW } from "../../utils/mutations";
@@ -53,7 +53,7 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Agency FB, cursive",
   },
   error: {
     color: "orange",
@@ -64,10 +64,10 @@ const styles = {
 
 export function Add() {
   // GET USER INFO
-const { err, loading, data } = useQuery(QUERY_USER, {
+  const { err, loading, data } = useQuery(QUERY_USER, {
     variables: { _id: Auth.getProfile().data._id },
   });
-const band = data?.user.name
+  const band = data?.user.name;
 
   // DEFAULT VALUES
   const defaultValues = {
@@ -92,7 +92,7 @@ const band = data?.user.name
 
   // ADD SHOW
   const [addShow, { error }] = useMutation(ADD_SHOW);
-  const [added, setAdd] = useState(false)
+  const [added, setAdd] = useState(false);
   const handleFormSubmit = async (event) => {
     try {
       const { data } = await addShow({
@@ -105,19 +105,21 @@ const band = data?.user.name
           notes: formValues.notes,
         },
       });
+      if (data) {
+        setAdd(true);
+      }
     } catch (error) {
       console.error(error);
     }
-    
   };
 
   // TIMEOUT SUCCESS EVENT
   setTimeout(() => {
-    setAdd(false)
+    setAdd(false);
   }, 10000);
 
   return (
-    <div class="fade">
+    <div className="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box
@@ -210,13 +212,15 @@ const band = data?.user.name
                 multiline={true}
                 rows={5}
               />
-              {error && <p style={styles.error}>try again</p>}
-              {err && <p style={styles.error}>engineers had too many try again</p>}
+
               <div style={styles.container}>
-                
-              {loading && <CircularProgress />}
-              {added && <Success />}
-              {added && <p style={styles.text}>show added</p>}
+                {error && <p style={styles.error}>try again</p>}
+                {err && (
+                  <p style={styles.error}>engineers had too many try again</p>
+                )}
+                {loading && <CircularProgress />}
+                {added && <Success />}
+                {data && null}
               </div>
               <div style={styles.container}>
                 {/* BUTTON FIELD */}
@@ -225,7 +229,7 @@ const band = data?.user.name
                   style={styles.button}
                   onClick={() => handleFormSubmit()}
                 >
-                  add show
+                  <b>add show</b>
                 </Button>
               </div>
             </div>

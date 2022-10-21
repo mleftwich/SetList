@@ -9,6 +9,9 @@ const resolvers = {
     user: async (parent, { _id }) => {
       return User.findOne({ _id });
     },
+    userName: async (parent, { name }) => {
+      return User.findOne({ name })
+    },
     allshows: async () => {
       return Show.find();
     },
@@ -31,8 +34,12 @@ const resolvers = {
     editUser: async (parent, { id, email, image, genre, about }) => {
       const update = {email, image, genre, about}
       const user = await User.findByIdAndUpdate(id, update, { new: true })
-      console.log(id)
       return user
+    },
+    editNotes: async (parent, { id, notes }) => {
+      const update = { notes }
+      const show = await Show.findByIdAndUpdate(id, update, { new: true })
+      return show
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });

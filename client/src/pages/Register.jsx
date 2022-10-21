@@ -5,10 +5,10 @@ import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 // GRAPHQL IMPORTS
-import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../utils/mutations';
+import { useMutation } from "@apollo/client";
+import { ADD_USER } from "../utils/mutations";
 
-import Auth from '../utils/auth'
+import Auth from "../utils/auth";
 
 // STYLES
 const styles = {
@@ -50,35 +50,36 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Agency FB, cursive",
   },
   error: {
     color: "orange",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Share Tech Mono, monospace",
     textAlign: "center",
   },
 };
 
 export function Register() {
   // ADD USER
-
+  //state
   const [addUser, { error, data }] = useMutation(ADD_USER);
-
-  
-
+  const [confirm, setConfirm] = useState(false);
+  // SUBMIT HANDLER
   const handleFormSubmit = async (event) => {
+    if (formValues.password !== formValues.confirm) {
+      return setConfirm(true);
+    }
     try {
       const { data } = await addUser({
         variables: { ...formValues },
       });
-    Auth.login(data.addUser.token);
+      Auth.login(data.addUser.token);
     } catch (e) {
       console.error(e);
     }
   };
-  
-  
-  // DEFAULT VALUES
+
+  // FORM CONTROLLER
   const defaultValues = {
     email: "",
     password: "",
@@ -94,8 +95,9 @@ export function Register() {
     });
   };
 
+  // REGISTER PAGE
   return (
-    <div class="fade">
+    <div className="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box
@@ -159,6 +161,19 @@ export function Register() {
                 style={styles.inputs}
               />
 
+              <h4 style={styles.labels}>confirm password:</h4>
+              <Input
+                id="confirm"
+                required
+                name="confirm"
+                placeholder="min 7 chars"
+                inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
+                type="password"
+                value={formValues.confirm}
+                onChange={handleInputChange}
+                style={styles.inputs}
+              />
+
               {/* IMAGE FIELD  */}
               <h4 style={styles.labels}>image:</h4>
               <Input
@@ -201,16 +216,28 @@ export function Register() {
                 multiline={true}
                 rows={5}
               />
-              
+
               <div style={styles.container}>
-                
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
-                  register
+                <Button
+                  variant="outlined"
+                  style={styles.button}
+                  onClick={() => handleFormSubmit()}
+                >
+                  <b>register</b>
                 </Button>
               </div>
-              {data && (<p style={styles.labels}>onward</p>)}
-                {error && (<p style={styles.error}>engineer's had too many try again</p>)}
+              <div style={styles.container}>
+                {data && <p style={styles.labels}>onward</p>}
+                {error && (
+                  <p style={styles.error}>engineer's had too many try again</p>
+                )}
+                {confirm && (
+                  <p style={styles.error}>
+                    shakey elvis - your password doesn't match
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </Box>

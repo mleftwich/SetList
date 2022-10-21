@@ -5,12 +5,12 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-
+import Success from "@mui/icons-material/DoneAllOutlined";
 // LOGIN IMPORTS
-import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../utils/mutations';
-import Auth from '../utils/auth';
-import { Navigate } from 'react-router-dom';
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
+import { Navigate } from "react-router-dom";
 
 // STYLES
 const styles = {
@@ -56,7 +56,7 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "PT Mono, monospace",
+    fontFamily: "Agency FB, cursive",
   },
 };
 
@@ -77,25 +77,26 @@ export function Login() {
     });
   };
 
-// AUTHENTICATE LOGIN
+  // AUTHENTICATE LOGIN
   const [login, { error, data }] = useMutation(LOGIN_USER);
   const handleFormSubmit = async (event) => {
     try {
       const { data } = await login({
         variables: { ...formValues },
-      })
-    Auth.login(data.login.token)
+      });
+      Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   if (Auth.loggedIn()) {
-    return <Navigate to="/user"/>
-    }
+    return <Navigate to="/user" />;
+  }
 
+  // LOGIN PAGE
   return (
-    <div class="fade">
+    <div className="fade">
       {/* CONTAINER */}
       <div style={styles.container}>
         <Box
@@ -113,11 +114,10 @@ export function Login() {
           <h1 style={styles.heading} className="heading">
             login
           </h1>
-          
+
           <div style={styles.container}>
             <div style={styles.background}>
-
-            {error && ( <p style={styles.error}>fail</p> )}
+              {error && <p style={styles.error}>fail</p>}
 
               {/* EMAIL FIELD  */}
               <h4 style={styles.labels}>email:</h4>
@@ -147,11 +147,15 @@ export function Login() {
               />
               <div style={styles.container}>
                 {/* BUTTON FIELD */}
-                <Button variant="outlined" style={styles.button} onClick={() => handleFormSubmit()}>
-                  login
+                <Button
+                  variant="outlined"
+                  style={styles.button}
+                  onClick={() => handleFormSubmit()}
+                >
+                  <b>login</b>
                 </Button>
               </div>
-              {data && (<p style={styles.labels}>Sucess!</p>)}
+              <div style={styles.container}>{data && <Success />}</div>
             </div>
           </div>
         </Box>

@@ -3,25 +3,24 @@ import { Box } from "@mui/system";
 // AUTH IMPORTS
 import Auth from "../../utils/auth";
 // COMPONENT IMPORTS
-import  Dashboard from "./Dashboard";
-import { Gigs } from '../Gigs'
-import { Loggedout } from './Logout'
-import { Add } from './Add'
-import { Profile } from './Profile'
+import Dashboard from "./Dashboard";
+import { Gigs } from "../Gigs";
+import { Loggedout } from "./Logout";
+import { Add } from "./Add";
+import { Profile } from "./Profile";
 // NAV IMPORTS
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import HomeIcon from "@mui/icons-material/Home";
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AccountIcon from '@mui/icons-material/AccountCircle';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AccountIcon from "@mui/icons-material/AccountCircle";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
-import CircularProgress from '@mui/material/CircularProgress';
-
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
-import { useQuery } from '@apollo/client';
-import { QUERY_USER } from '../../utils/queries'
-import { Navigate } from 'react-router-dom';
+import { useQuery } from "@apollo/client";
+import { QUERY_USER } from "../../utils/queries";
+import { Navigate } from "react-router-dom";
 const styles = {
   container: {
     display: "flex",
@@ -54,15 +53,17 @@ const styles = {
     textAlign: "center",
   },
 };
-export function User() {
+export const User = () => {
   // GET BAND NAME
   const { err, loading, data } = useQuery(QUERY_USER, {
     variables: { _id: Auth.getProfile().data._id },
   });
-const band = data?.user.name
-localStorage.setItem('band', band)
 
-// STATE VALUES
+  const band = data?.user.name;
+
+  localStorage.setItem("band", band);
+
+  // STATE VALUES
   const [value, setValue] = useState("recents");
   const [currentPage, setCurrentPage] = useState("Dashboard");
   const handlePageChange = (page) => setCurrentPage(page);
@@ -70,32 +71,31 @@ localStorage.setItem('band', band)
     setValue(newValue);
   };
 
-  if (!Auth.loggedIn()) {
-    return <Navigate to="/"/>
-    }
- // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
+  // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
   const renderPage = () => {
     if (currentPage === "Dashboard") {
       return <Dashboard />;
-       } else if (currentPage === "Home") {
-         return <Gigs />;
-       } else if (currentPage === "Logout") {
-         return <Loggedout />;
+    } else if (currentPage === "Home") {
+      return <Gigs />;
+    } else if (currentPage === "Logout") {
+      return <Loggedout />;
     } else if (currentPage === "Add") {
       return <Add />;
- } else if (currentPage === "Profile") {
-  return <Profile />;
- }
+    } else if (currentPage === "Profile") {
+      return <Profile />;
+    }
   };
 
-  if (Auth.loggedIn()) {
-  
+  if (!data?.user.name) {
+    return <Navigate to="/user" />;
+  }
+
   return (
-    <div class="fade">
+    <div className="fade">
       <div style={styles.container}>
         <BottomNavigation
           sx={{
-            width: { xs: 350, sm: 450, md: 500, lg: 595, xl: 670 },
+            width: { xs: 360, sm: 450, md: 500, lg: 595, xl: 670 },
             borderRadius: 3,
             "& .MuiBottomNavigationAction-label": {
               fontFamily: "Share Tech Mono, sans-serif",
@@ -139,7 +139,6 @@ localStorage.setItem('band', band)
             icon={<LogoutIcon style={{ color: "white" }} />}
             onClick={() => handlePageChange("Logout")}
           />
-          
         </BottomNavigation>
       </div>
       <div style={styles.container}>
@@ -163,11 +162,11 @@ localStorage.setItem('band', band)
         </Box>
       </div>
       <div style={styles.container}>
-            {err && <p style={styles.error}>engineer's had too many please try again</p>}
-            {loading && <CircularProgress />}
-          </div>
+        {err && (
+          <p style={styles.error}>engineer's had too many please try again</p>
+        )}
+        {loading && <CircularProgress />}
+      </div>
     </div>
   );
-       
-  }
-}
+};

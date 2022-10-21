@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 // MATERIAL IMPORTS
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -6,17 +7,19 @@ import { blueGrey } from "@mui/material/colors";
 import { teal } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import AddressIcon from "@mui/icons-material/Signpost";
 import DateIcon from "@mui/icons-material/EventNote";
-import TimeIcon from "@mui/icons-material/HistoryToggleOff";
+import TimeIcon from "@mui/icons-material/AccessTime";
 import Modal from "@mui/material/Modal";
-import CloseIcon from '@mui/icons-material/CancelPresentation';
+import CloseIcon from "@mui/icons-material/CancelPresentation";
+import Input from "@mui/material/Input";
+import SaveIcon from "@mui/icons-material/DoneAll";
+
 // DATA IMPORTS
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_BAND_SHOWS } from "../../utils/queries";
-import { REMOVE_SHOW } from "../../utils/mutations";
+import { EDIT_NOTES, REMOVE_SHOW } from "../../utils/mutations";
 
 // STYLES
 const styles = {
@@ -69,6 +72,14 @@ const styles = {
     color: teal[100],
     fontFamily: "PT Mono, monospace",
   },
+  inputs: {
+    backgroundColor: "rgb(0, 0, 0, 0.6)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    color: "rgb(255, 255, 255, 0.3)",
+    borderRadius: 5,
+    fontFamily: "Share Tech Mono, monospace",
+    width: "100%",
+  },
 };
 
 export default function Dashboard() {
@@ -80,7 +91,6 @@ export default function Dashboard() {
   const res = [data?.shows];
   const shows = res[0];
 
-
   // FUNCTION TO DELETE SHOW
   const [delShow, { error: removeError, data: removeData }] =
     useMutation(REMOVE_SHOW);
@@ -91,53 +101,120 @@ export default function Dashboard() {
           id: show,
         },
       });
+      if (!data) {
+        refetch();
+      }
       refetch();
     } catch (e) {
       console.error(e);
     }
   }
 
+  // FUNCTION TO UPDATE NOTES
+  const [editNotes, { error: editError, loading: load, data: editData }] =
+    useMutation(EDIT_NOTES);
+  async function handleEdit(id, notes) {
+    console.log(notes);
+    try {
+      const data = await editNotes({
+        variables: {
+          id: id,
+          notes: notes,
+        },
+      });
+      if (!data) {
+        refetch();
+      }
+      refetch();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   // NOTES MODAL
-  
-  const handleClose = () => setOpen(false);
-  const [open, setOpen] = React.useState(false);
-  const [notes, setNotes] = React.useState("")
+  const handleClose = () => {
+    setOpen(false);
+    setClose(true);
+  };
+  const [open, setOpen] = useState(false);
+  const [close, setClose] = useState("");
+  const [notes, setNotes] = useState("");
+  const [showId, setShowId] = useState("");
+
   function handleOpen(note) {
-    setOpen(true)
-    setNotes(note)
+    setNotes(note);
+    setOpen(true);
   }
+  const defaultValues = {
+    notes: notes,
+  };
+  const [formValues, setFormValues] = useState(defaultValues);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
   const noteDiv = () => {
     return (
-      
       <div style={styles.container}>
-        <Modal open={handleOpen} close={handleClose}>
-          <Box
-          sx={{
-            width: { xs: 250, sm: 300, md: 400, lg: 500, xl: 500 },
-            backgroundColor: "rgb(0, 0, 0, 0.7)",
-            borderRadius: 3,
-            transition: "ease in",
-            margin: 1,
-            padding: 1.5,
-          }}
+        <Modal
+          open={open}
+          close={close}
+          sx={{ justifyContent: "center" }}
+          className="fade"
         >
-          <h3 style={styles.links}>notes</h3>
-            <p style={styles.text}>{notes}</p>
+          <Box
+            sx={{
+              width: { xs: 250, sm: 300, md: 400, lg: 500, xl: 500 },
+              backgroundColor: "rgb(0, 0, 0, 0.7)",
+              borderRadius: 3,
+              transition: "ease in",
+              margin: 1,
+              padding: 1.5,
+            }}
+          >
+            <h3 style={styles.links}>notes</h3>
+            <Input
+              id="notes"
+              name="notes"
+              inputProps={{ style: { color: "rgb(255, 255, 255)" } }}
+              type="text"
+              value={formValues.notes}
+              onChange={handleInputChange}
+              style={styles.inputs}
+              multiline={true}
+              rows={10}
+            />
             <div style={styles.container}>
-            <IconButton color="primary" onClick={() => handleClose()}>
-            
-            <CloseIcon />
-          </IconButton>
-          </div>
+              <IconButton color="primary" onClick={() => handleClose()}>
+                <CloseIcon />
+              </IconButton>
+              <IconButton
+                color="primary"
+                onClick={() => handleEdit(showId, formValues.notes)}
+                sx={{ marginLeft: "1rem" }}
+              >
+                <SaveIcon />
+              </IconButton>
+            </div>
+            <div style={styles.container}>
+              {load && <CircularProgress />}
+              {editData && <p style={styles.text}>onward</p>}
+              {editError && <p style={styles.error}>fail</p>}
+            </div>
           </Box>
-          </Modal>
-          </div>
+        </Modal>
+      </div>
     );
-  }
+  };
+
+  // DASHBOARD PAGE
   refetch();
   return (
-    <div class="fade">
+    <div className="fade">
       <div style={styles.container}>
         <Box
           sx={{
@@ -153,6 +230,10 @@ export default function Dashboard() {
           <h1 style={styles.heading} className="heading">
             dashboard
           </h1>
+          <div style={styles.container}>
+            <p style={styles.links}>note:</p>
+            <p style={styles.text}>listings last 3 months</p>
+          </div>
           {shows &&
             shows.map((shows) => (
               <div style={styles.background} key={shows._id}>
@@ -168,11 +249,18 @@ export default function Dashboard() {
                     <TimeIcon sx={{ color: blueGrey[400] }} /> {shows.start}
                   </h4>
                   <h4 style={styles.text}>{shows.attending}</h4>
-              
-                  <IconButton color="primary" onClick={() => handleOpen(shows.notes)}>
+
+                  <IconButton
+                    color="primary"
+                    onClick={() =>
+                      handleOpen(shows.notes) &
+                      setNotes(shows.notes) &
+                      setFormValues({ notes: shows.notes }) &
+                      setShowId(shows._id)
+                    }
+                  >
                     <TextSnippetIcon />
                   </IconButton>
-              
                   <IconButton
                     color="primary"
                     onClick={() => handleDelete(shows._id)}
@@ -180,22 +268,20 @@ export default function Dashboard() {
                     <DeleteIcon />
                   </IconButton>
                 </div>
-               
               </div>
             ))}
 
           <div style={styles.container}>
-          <div style={styles.container}>
-                  {open ? noteDiv() : null}
-                 </div>
             {(error || removeError) && (
               <p style={styles.error}>
                 engineer's had too many please try again
               </p>
             )}
             {loading && <CircularProgress />}
+            {removeData && null}
           </div>
         </Box>
+        <div style={styles.container}>{open ? noteDiv() : null}</div>
       </div>
     </div>
   );

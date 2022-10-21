@@ -15,13 +15,10 @@ import { Home } from "./pages/Home";
 import { User } from "./pages/user/User";
 const httpLink = createHttpLink({
   uri: "/graphql",
-  
 });
-
+// AUTHORIZATION
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
   const token = localStorage.getItem("id_token");
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -29,13 +26,12 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
+// APOLLO SET UP
 const client = new ApolloClient({
-  // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
+// APP AND ROUTING
 function App() {
   return (
     <ApolloProvider client={client}>
