@@ -52,7 +52,7 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "Share Tech Mono, cursive",
+    fontFamily: "Share Tech Mono, monospace",
   },
   error: {
     color: "orange",

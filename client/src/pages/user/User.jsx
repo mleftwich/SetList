@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { QUERY_USER } from "../../utils/queries";
-import { Navigate } from "react-router-dom";
+
 const styles = {
   container: {
     display: "flex",
@@ -54,13 +54,15 @@ const styles = {
   },
 };
 export const User = () => {
+
+  
   // GET BAND NAME
-  const { err, loading, data } = useQuery(QUERY_USER, {
+  const { error: err, loading, data } = useQuery(QUERY_USER, {
     variables: { _id: Auth.getProfile().data._id },
   });
 
-  const band = data?.user.name;
 
+  const band = data?.user.name;
   localStorage.setItem("band", band);
 
   // STATE VALUES
@@ -70,6 +72,8 @@ export const User = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+
 
   // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
   const renderPage = () => {
@@ -86,10 +90,7 @@ export const User = () => {
     }
   };
 
-  if (!data?.user.name) {
-    return <Navigate to="/user" />;
-  }
-
+ 
   return (
     <div className="fade">
       <div style={styles.container}>

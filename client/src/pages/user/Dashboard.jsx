@@ -83,6 +83,7 @@ const styles = {
 };
 
 export default function Dashboard() {
+ 
   // GET BAND SHOWS
   const band = localStorage.getItem("band");
   const { error, loading, data, refetch } = useQuery(QUERY_BAND_SHOWS, {

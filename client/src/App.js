@@ -39,8 +39,8 @@ function App() {
         <div className="flex-column justify-flex-start min-100-vh">
           <div className="container">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/user" element={<User />} />
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/user" element={<User />} />
             </Routes>
           </div>
         </div>
