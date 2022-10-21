@@ -50,7 +50,7 @@ const styles = {
   button: {
     color: "white",
     margin: "1rem",
-    fontFamily: "Agency FB, cursive",
+    fontFamily: "Share Tech Mono, monospace",
   },
   error: {
     color: "orange",
