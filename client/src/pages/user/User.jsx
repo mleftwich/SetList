@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box } from "@mui/system";
 // AUTH IMPORTS
 import Auth from "../../utils/auth";
@@ -18,8 +18,9 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { QUERY_USER } from "../../utils/queries";
+import { Navigate } from "react-router-dom";
 
 const styles = {
   container: {
@@ -55,15 +56,8 @@ const styles = {
 };
 export const User = () => {
 
-  
-  // GET BAND NAME
-  const { error: err, loading, data } = useQuery(QUERY_USER, {
-    variables: { _id: Auth.getProfile().data._id },
-  });
-
-
-  const band = data?.user.name;
-  localStorage.setItem("band", band);
+    // LAZY QUERY TO GET USER
+    const [getUser, { error: err, loading, data } ]= useLazyQuery(QUERY_USER);
 
   // STATE VALUES
   const [value, setValue] = useState("recents");
@@ -72,7 +66,22 @@ export const User = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  
+  // ON MOUNT CHECK IF LOGGED IN AND EITHER RETURN HOME OR PROCEED WITH RENDERING DASHBOARD
+  useEffect(() => {
+      if(!Auth.loggedIn()){
+        return <Navigate to={'/'} />
+      }
+      getUser({
+        variables: { _id: Auth.getProfile().data._id },
+      })
+     
+    }, [getUser])
 
+
+    // SET BAND NAME IN LOCAL STORAGE
+  const band = data?.user.name;
+  localStorage.setItem("band", band);
 
 
   // FUNCTION TO RENDER CURRENT PAGE FROM HANDLE EVENTS
