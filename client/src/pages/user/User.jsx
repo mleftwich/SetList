@@ -18,9 +18,9 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { QUERY_USER } from "../../utils/queries";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   container: {
@@ -66,17 +66,18 @@ export const User = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const navigate = useNavigate()
   
   // ON MOUNT CHECK IF LOGGED IN AND EITHER RETURN HOME OR PROCEED WITH RENDERING DASHBOARD
   useEffect(() => {
       if(!Auth.loggedIn()){
-        return <Navigate to={'/'} />
+        return navigate('/')
       }
       getUser({
         variables: { _id: Auth.getProfile().data._id },
       })
      
-    }, [getUser])
+    }, [getUser, navigate])
 
 
     // SET BAND NAME IN LOCAL STORAGE
