@@ -127,8 +127,8 @@ export function Gigs() {
   // ACTUAL MODAL BODY
   const BandModal = () => {
     return (
-      <div style={styles.container} className="fade">
-        <Modal open={open} close={close} className="fade" sx={{overflow: 'scroll', outline: none}}>
+      <div style={styles.container} className="fade" sx={{outline: 'none'}}>
+        <Modal open={open} close={close} className="fade" sx={{overflow: 'scroll'}}>
           <Box
             sx={{
               width: { xs: 250, sm: 300, md: 400, lg: 500, xl: 500 },
@@ -137,6 +137,7 @@ export function Gigs() {
               transition: "ease in",
               margin: 1,
               padding: 1.5,
+              outline: "none",
             }}
           >
             <IconButton color="primary" onClick={() => handleClose()}>
