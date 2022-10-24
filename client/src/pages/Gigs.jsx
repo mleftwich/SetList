@@ -128,7 +128,7 @@ export function Gigs() {
   const BandModal = () => {
     return (
       <div style={styles.container} className="fade">
-        <Modal open={open} close={close} className="fade" sx={{overflow: 'scroll'}}>
+        <Modal open={open} close={close} className="fade" sx={{overflow: 'scroll', outline: none}}>
           <Box
             sx={{
               width: { xs: 250, sm: 300, md: 400, lg: 500, xl: 500 },
