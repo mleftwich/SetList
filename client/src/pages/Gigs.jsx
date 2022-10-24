@@ -123,6 +123,7 @@ export function Gigs() {
   };
   const openPop = Boolean(anchor);
   const addId = open ? "address-popover" : undefined;
+
   // ACTUAL MODAL BODY
   const BandModal = () => {
     return (
@@ -138,6 +139,9 @@ export function Gigs() {
               padding: 1.5,
             }}
           >
+            <IconButton color="primary" onClick={() => handleClose()}>
+                <CloseIcon />
+              </IconButton>
             <div style={styles.container}>
               {load && <p style={styles.text}>loading..</p>}
               <h2 style={styles.band}>{info?.name}</h2>
@@ -158,9 +162,7 @@ export function Gigs() {
               <p style={styles.text}>{info?.about}</p>
             </div>
             <div style={styles.container}>
-              <IconButton color="primary" onClick={() => handleClose()}>
-                <CloseIcon />
-              </IconButton>
+              
             </div>
             {err && <p style={styles.text}>dodgy</p>}
             {response && null}
