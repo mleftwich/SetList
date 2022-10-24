@@ -162,10 +162,10 @@ export function Gigs() {
               <p style={styles.text}>{info?.about}</p>
             </div>
             <div style={styles.container}>
-              
-            </div>
             {err && <p style={styles.text}>dodgy</p>}
             {response && null}
+            </div>
+            
           </Box>
         </Modal>
       </div>
