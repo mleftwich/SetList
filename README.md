@@ -4,6 +4,7 @@
   
   ## Table of Contents
   * [Description](#description)
+  * [Technologies](#technologies)
   * [Installation](#installation)
   * [Usage](#usage)
   * [Contributing](#contributing)
@@ -18,6 +19,13 @@
 
   ![screenshot](./screenshot.png)
 
+  ## Technologies
+  * React
+  * node.js
+  * JSX
+  * Express
+  * NoSQL
+
   ## Installation
    None
 
@@ -27,15 +35,15 @@
 
 
   ## Contributing
-   Not seeking contributions
+   If you'd like to contribute please reach out via the email below
 
 
   ## Guidelines
-   None
+   Relying solely on the honesty of the community to keep the content accurate and appropriate.
 
 
   ## Tests
-   
+   Tested in development.
 
 
   ## License
