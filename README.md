@@ -21,6 +21,7 @@
 
   ## Technologies
   * React
+  * Material UI
   * node.js
   * JSX
   * Express
