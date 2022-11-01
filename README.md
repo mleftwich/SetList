@@ -28,7 +28,7 @@
   * NoSQL
 
   ## Installation
-   None
+   No installation necessary
 
 
   ## Usage
